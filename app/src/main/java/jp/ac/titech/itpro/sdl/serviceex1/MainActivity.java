@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
                 if (action == null) return;
                 switch (action) {
                     case TestService3.ACTION_ANSWER:
-                        //AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        //builder.setMessage("Message received from TestService3.")
-                        //        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        //            public void onClick(DialogInterface dialog, int id) {
-                        //            }
-                        //        });
-                        //builder.show();
-                        Toast.makeText(context, intent.getStringExtra(TestService3.EXTRA_ANSWER), Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage(intent.getStringExtra(TestService3.EXTRA_ANSWER))
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        builder.show();
+                        //Toast.makeText(context, intent.getStringExtra(TestService3.EXTRA_ANSWER), Toast.LENGTH_LONG).show();
                         break;
 
                 }
