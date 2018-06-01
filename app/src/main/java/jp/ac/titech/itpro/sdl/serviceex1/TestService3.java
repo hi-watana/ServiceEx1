@@ -8,6 +8,9 @@ public class TestService3 extends IntentService {
     private final static String TAG = "TestService3";
     public final static String EXTRA_MYARG = "MYARG";
 
+    public final static String ACTION_ANSWER = "ANSWERED";
+    public final static String EXTRA_ANSWER = "ANSWER";
+
     TestService3() {
         super(TAG);
     }
@@ -18,6 +21,10 @@ public class TestService3 extends IntentService {
         Log.d(TAG, "myarg = " + intent.getStringExtra(EXTRA_MYARG));
         try {
             Thread.sleep(5000);
+            Intent answerIntent = new Intent();
+            answerIntent.setAction(ACTION_ANSWER);
+            answerIntent.putExtra(EXTRA_ANSWER, "This is a message from TestService3.");
+            sendBroadcast(answerIntent);
         }
         catch (InterruptedException e) {
             e.printStackTrace();

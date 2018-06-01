@@ -1,13 +1,22 @@
 package jp.ac.titech.itpro.sdl.serviceex1;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
+
+    private BroadcastReceiver broadcastReceiver;
+    private IntentFilter broadcastFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,15 +24,43 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate in " + Thread.currentThread());
         setContentView(R.layout.activity_main);
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                Log.d(TAG, "onReceive: " + action);
+                if (action == null) return;
+                switch (action) {
+                    case TestService3.ACTION_ANSWER:
+                        //AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        //builder.setMessage("Message received from TestService3.")
+                        //        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        //            public void onClick(DialogInterface dialog, int id) {
+                        //            }
+                        //        });
+                        //builder.show();
+                        Toast.makeText(context, intent.getStringExtra(TestService3.EXTRA_ANSWER), Toast.LENGTH_LONG).show();
+                        break;
+
+                }
+            }
+        };
+
+        broadcastFilter = new IntentFilter();
+        broadcastFilter.addAction(TestService3.ACTION_ANSWER);
     }
 
     public void pressTest1(View v) {
         testService1();
     }
 
-    public void pressTest2(View v) { testService2(); }
+    public void pressTest2(View v) {
+        testService2();
+    }
 
-    public void pressTest3(View v) { testService3(); }
+    public void pressTest3(View v) {
+        testService3();
+    }
 
     private void testService1() {
         Log.d(TAG, "testService1 in " + Thread.currentThread());
@@ -43,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TestService3.class);
         intent.putExtra(TestService3.EXTRA_MYARG, "Hello, Service3");
         startService(intent);
+        registerReceiver(broadcastReceiver, broadcastFilter);
     }
 
 }
